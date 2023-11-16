@@ -7,6 +7,8 @@ import SwiperCore, { Navigation } from "swiper";
 import "swiper/swiper.min.css";
 import { contract_address, goerliNetworkChainId } from "../constants";
 
+import styles from "../styles/Home.module.css";
+
 SwiperCore.use([Navigation]);
 
 const MORALIS_API_KEY =
@@ -20,6 +22,15 @@ function Banner() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nfts, setNfts] = useState([]);
   const [totalKh, setTotalKh] = useState(0);
+  
+  const [isNetworkSwitchHighlighted, setIsNetworkSwitchHighlighted] =
+    useState(false);
+  const [isConnectHighlighted, setIsConnectHighlighted] = useState(false);
+
+  const closeAll = () => {
+    setIsNetworkSwitchHighlighted(false);
+    setIsConnectHighlighted(false);
+  };
 
   useEffect(() => {
     if (account) {
@@ -132,7 +143,7 @@ function Banner() {
                 </h2>
               </Link>
             </div>
-            <div className="d-flex gap-3 align-items-center">
+            {/* <div className="d-flex gap-3 align-items-center">
               <button className="btn sign__btn text-black" id="btn-connect">
                 <div
                   className="card__boxbolt"
@@ -158,6 +169,7 @@ function Banner() {
                         className="oneline"
                         style={{ marginBottom: "-5px" }}
                         onClick={onDisconnect}>
+                          {console.log("account",account)}
                         {account.substr(0, 10)}
                         <span>{"....."}</span>
                         {account.slice(-4)}
@@ -171,7 +183,41 @@ function Banner() {
                   )}
                 </div>
               </button>
-            </div>
+            </div> */}
+            <header>
+              <div
+                className={styles.backdrop}
+                style={{
+                  opacity:
+                    isConnectHighlighted || isNetworkSwitchHighlighted
+                      ? 1
+                      : 0,
+                }}
+              />
+              <div className={styles.header}>
+                <div className={styles.buttons}>
+                  <div
+                    onClick={closeAll}
+                    className={`${styles.highlight} ${isNetworkSwitchHighlighted
+                      ? styles.highlightSelected
+                      : ``
+                      }`}
+                  >
+                    <w3m-network-button />
+                  </div>
+                  <div
+                    onClick={closeAll}
+                    className={`${styles.highlight} ${isConnectHighlighted
+                      ? styles.highlightSelected
+                      : ``
+                      }`}
+                  >
+                    <w3m-button />
+                  </div>
+                </div>
+              </div>
+            </header>
+
           </div>
           <div className="banner__content1 position-relative">
             <img
